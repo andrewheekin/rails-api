@@ -1,5 +1,24 @@
-require 'rails_helper'
+class TodosController < ApplicationController
+  # [...]
+  # GET /todos
+  def index
+    # get current user todos
+    @todos = current_user.todos
+    json_response(@todos)
+  end
+  # [...]
+  # POST /todos
+  def create
+    # create todos belonging to current user
+    @todo = current_user.todos.create!(todo_params)
+    json_response(@todo, :created)
+  end
+  # [...]
+  private
 
-RSpec.describe TodosController, type: :controller do
-
+  # remove `created_by` from list of permitted parameters
+  def todo_params
+    params.permit(:title)
+  end
+  # [...]
 end
